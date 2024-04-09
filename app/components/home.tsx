@@ -223,7 +223,10 @@ export function Home() {
   return (
     <ErrorBoundary>
       <Router>
-        <Screen />
+        <div>
+          {avatar && <img src={avatar} alt="Avatar" />}
+          <Screen />
+        </div>
       </Router>
     </ErrorBoundary>
   );
