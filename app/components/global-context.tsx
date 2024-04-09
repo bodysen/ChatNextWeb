@@ -18,7 +18,8 @@ const initialGlobalState: GlobalContextType = {
 
 const GlobalContext = createContext<GlobalContextType>(initialGlobalState);
 
-export const GlobalProvider: React.FC = ({ children }) => {
+// 使用 Partial 类型指定 children 属性为可选
+export const GlobalProvider: React.FC<Partial<React.ReactNode>> = ({ children }) => {
   const [avatar, setAvatar] = useState(initialGlobalState.avatar);
   const [nickname, setNickname] = useState(initialGlobalState.nickname);
   // 在这里添加其他全局变量的状态和更新函数
