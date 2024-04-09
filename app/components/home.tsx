@@ -202,7 +202,7 @@ export function Home() {
     };
   }, []);
 
-  const handleMessage = (event) => {
+  const handleMessage = (event: MessageEvent) => {
     if (event.origin === 'https://gpt4.micropdf.top') { // 替换为你的网站域名
       const { nickname, avatar } = event.data;
       console.log('Received nickname:', nickname);
