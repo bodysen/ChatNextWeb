@@ -195,6 +195,27 @@ export function Home() {
     useAccessStore.getState().fetch();
   }, []);
 
+  useEffect(() => {
+    window.addEventListener('message', handleMessage);
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
+
+  const handleMessage = (event) => {
+    if (event.origin === 'https://gpt4.micropdf.top') { // 替换为你的网站域名
+      const { nickname, avatar } = event.data;
+      console.log('Received nickname:', nickname);
+      console.log('Received avatar:', avatar);
+      // 在页面中输出 nickname 和 avatar
+      // 例如：
+      // const nicknameElement = document.getElementById('nickname');
+      // const avatarElement = document.getElementById('avatar');
+      // nicknameElement.textContent = nickname;
+      // avatarElement.src = avatar;
+    }
+  };
+
   if (!useHasHydrated()) {
     return <Loading />;
   }
