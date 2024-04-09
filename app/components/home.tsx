@@ -3,6 +3,7 @@
 require("../polyfill");
 
 import { useState, useEffect } from "react";
+import { GlobalProvider, useGlobal } from "./global-context";
 
 import styles from "./home.module.scss";
 
@@ -190,7 +191,7 @@ export function Home() {
   useLoadData();
   useHtmlLang();
 
-  const [avatar, setAvatar] = useState('');
+  const { updateAvatar, updateNickname } = useGlobal();
 
   useEffect(() => {
     console.log("[Config] got config from build time", getClientConfig());
@@ -202,20 +203,15 @@ export function Home() {
     return () => {
       window.removeEventListener('message', handleMessage);
     };
-  }, []);
+  }, [updateAvatar, updateNickname]);
 
   const handleMessage = (event: MessageEvent) => {
-    if (event.origin === 'https://gpt4.micropdf.top') { // 替换为你的网站域名
+    if (event.origin === 'https://gpt4.micropdf.top') { 
       const { nickname, avatar } = event.data;
-      console.log('Received nickname:', nickname);
-      console.log('Received avatar:', avatar);
-      setAvatar(avatar);
-      // 在页面中输出 nickname 和 avatar
-      // 例如：
-      // const nicknameElement = document.getElementById('nickname');
-      // const avatarElement = document.getElementById('avatar');
-      // nicknameElement.textContent = nickname;
-      // avatarElement.src = avatar;
+      console.log('received nickname:', nickname);
+      console.log('received avatar:', avatar);
+      updateAvatar(avatar); // 更新 avatar
+      updateNickname(nickname); // 更新 nickname
     }
   };
 
@@ -226,10 +222,7 @@ export function Home() {
   return (
     <ErrorBoundary>
       <Router>
-        <div>
-          {avatar && <img src={avatar} alt="Avatar" />}
           <Screen />
-        </div>
       </Router>
     </ErrorBoundary>
   );
