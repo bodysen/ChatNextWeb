@@ -3,7 +3,7 @@
 require("../polyfill");
 
 import { useState, useEffect } from "react";
-import { GlobalProvider, useGlobal } from "./global-context";
+import { useGlobal } from "./global-context";
 
 import styles from "./home.module.scss";
 
@@ -191,7 +191,7 @@ export function Home() {
   useLoadData();
   useHtmlLang();
 
-  const { updateAvatar, updateNickname } = useGlobal();
+  const { avatar, updateAvatar, nickname, updateNickname } = useGlobal()
 
   useEffect(() => {
     console.log("[Config] got config from build time", getClientConfig());
@@ -199,21 +199,22 @@ export function Home() {
   }, []);
 
   useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.origin === 'https://gpt4.micropdf.top') {
+        const { nickname, avatar } = event.data;
+        console.log('received nickname:', nickname);
+        console.log('received avatar:', avatar);
+        // 调用更新函数更新全局变量
+        updateAvatar(avatar);
+        updateNickname(nickname);
+      }
+    };
+
     window.addEventListener('message', handleMessage);
     return () => {
       window.removeEventListener('message', handleMessage);
     };
   }, [updateAvatar, updateNickname]);
-
-  const handleMessage = (event: MessageEvent) => {
-    if (event.origin === 'https://gpt4.micropdf.top') { 
-      const { nickname, avatar } = event.data;
-      console.log('received nickname:', nickname);
-      console.log('received avatar:', avatar);
-      updateAvatar(avatar); // 更新 avatar
-      updateNickname(nickname); // 更新 nickname
-    }
-  };
 
   if (!useHasHydrated()) {
     return <Loading />;
