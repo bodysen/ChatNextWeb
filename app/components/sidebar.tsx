@@ -31,6 +31,8 @@ import { isIOS, useMobileScreen } from "../utils";
 import dynamic from "next/dynamic";
 import { showConfirm, showToast } from "./ui-lib";
 
+import { useGlobal } from "./globalContext";
+
 const ChatList = dynamic(async () => (await import("./chat-list")).ChatList, {
   loading: () => null,
 });
@@ -142,6 +144,7 @@ export function SideBar(props: { className?: string }) {
   );
 
   useHotKey();
+  const { avatar, nickname } = useGlobal();
 
   return (
     <div
@@ -158,7 +161,8 @@ export function SideBar(props: { className?: string }) {
           
         </div>
         <div className={styles["sidebar-sub-title"]}>
-          
+          <img src={avatar} alt="Avatar" />
+          <p>{nickname}</p>
         </div>
         <div className={styles["sidebar-logo"] + " no-dark"}>
           <ChatGptIcon />
