@@ -190,6 +190,8 @@ export function Home() {
   useLoadData();
   useHtmlLang();
 
+  const [avatar, setAvatar] = useState('');
+
   useEffect(() => {
     console.log("[Config] got config from build time", getClientConfig());
     useAccessStore.getState().fetch();
@@ -207,6 +209,7 @@ export function Home() {
       const { nickname, avatar } = event.data;
       console.log('Received nickname:', nickname);
       console.log('Received avatar:', avatar);
+      setAvatar(avatar);
       // 在页面中输出 nickname 和 avatar
       // 例如：
       // const nicknameElement = document.getElementById('nickname');
