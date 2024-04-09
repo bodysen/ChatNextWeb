@@ -153,8 +153,6 @@ function Screen() {
         <>
           <SideBar 
             className={isHome ? styles["sidebar-show"] : "" }
-            nickname={nickname}
-            avatar={avatar} 
           />
 
           <div className={styles["window-content"]} id={SlotID.AppBody}>
